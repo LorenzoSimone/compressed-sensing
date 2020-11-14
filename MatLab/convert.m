@@ -1,9 +1,11 @@
-function xnew = convert(A,x,b)
-    [m,n] = size(A);
+function new_x = convert(A,x,b) 
+    m = size(A,1);
+    
     P = A(:,1:m);
-    Q = A(:,m+1:n);
-
     xq = x(m+1:end);
+    Q = A(:,m+1:end);
     xp = P\(b-Q*xq);
-    xnew = x;
+    
+    new_x = [xp; xq];
 end
+

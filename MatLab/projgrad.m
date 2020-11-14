@@ -13,7 +13,7 @@ function [x,data] = projgrad(objfun,A,b,x0)
 %  4) repeat.
 
 % Parameters
-MAXITER   = 400;
+MAXITER   = 100;
 tol       = 1e-2;
 alpha_tol = 1e-6;
 c         = 0.5;
@@ -34,6 +34,8 @@ printIter();
 
 tic
 for k = 1:MAXITER
+    
+    xk = convert(A,xk,b);
     
     % compute function and gradient
     [f_k,g_k] = objfun(xk);
@@ -56,19 +58,21 @@ for k = 1:MAXITER
     end
     
     % step size
-    alpha_k = 1;
-
+    alpha_k = 0.5;
+  
     %linesearch by armijo backtracking
     xk1 = xk+alpha_k*d_k;
     f_k1 = objfun(xk1);
+    
+    counter = 0;
     while f_k1 > f_k + c*alpha_k*g_k'*d_k && alpha_k > alpha_tol
         % backstep alpha_k
         alpha_k = 0.5 * alpha_k;
-
+        fprintf('Steps by linesearch %d', counter);
         % evaluate function at new iterate
         xk1 = xk + alpha_k * d_k;
         f_k1 = objfun(xk1);
-        
+        counter = counter + 1;
     end
     
     % record the iterates
@@ -114,6 +118,7 @@ n = length(y);
 H = eye(n);
 x0 = y;
 options = optimset('Display','off');
+
 x = quadprog(H,-y,A,b,[],[],[],[],x0,options);
 
 end

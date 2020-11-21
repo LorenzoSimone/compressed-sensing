@@ -1,5 +1,6 @@
 function dualsimplex(A,b,c,state)
 
+%Finding a good basis
 [m, n] = size(A);
 ROWS = linspace(1,m,m);
 B = ROWS(1:n);
@@ -11,9 +12,10 @@ while(state == "")
     fprintf('||--------Iteration [%d]--------||\n', iteration);
     A_b = A(B,:); A_N = A(N,:);
     b_b = b(B); b_N = b(N);
-    
+    B
+    A_b
     A_b_inv = inv(A_b);
-    
+
     %Initialization of x_ and y_
     x =  A_b_inv*b_b;    
     y = zeros(1,m);
@@ -32,6 +34,7 @@ while(state == "")
     min_k = find(A_nx > b_N, 1, 'first');
     
     k = N(min_k);
+
     eta_b = A(k,:)* A_b_inv;
         
     %Primal empty check
@@ -42,19 +45,21 @@ while(state == "")
         break
     end
     
-    %Debug eta_b
-   
-    
     %Finding the exiting variable
-    [theta, h] = min(eta_b.*(y(B).^(-1))');
-  
+    pos_eta = find(eta_b > 0);
+    y_b = y(B);
     
+    [theta, h] = min(y_b(pos_eta)./(eta_b(pos_eta)));
+    k
+    h = B(h);
+
     %Recalculating Basic and Non-Basic index vectors
-    B = sort(setdiff(union(B,k),h));
+    B = union(setdiff(B, h), k);
     N = setdiff(ROWS, B);
     iteration = iteration+1;
     
     %[DEBUG] Printing variables as in the order of Exercise 2.31
+    %{
     x
     A_nx
     b_N
@@ -62,5 +67,6 @@ while(state == "")
     k
     eta_b
     h
-    B 
+    %}
+    
 end

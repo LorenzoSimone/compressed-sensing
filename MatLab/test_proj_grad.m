@@ -1,5 +1,5 @@
 
-m = 20; n = 100;
+m = 20; n = 30;
 INTERVAL = [0,3];
 PLOT_POINTS = 1000;
 
@@ -26,19 +26,28 @@ xp = P\(b-Q*xq);
 new_x = [xp; xq];
 %}
 
+%{
 %Uncomment to use our implementation
 sol = projgrad(@math_fun,new_A,b,new_x);
 sol = convert(new_A,sol,b);
-
-
+%}
 
 %{
-LINPROG MATLAB ORIGINAL IMPL. PGD/SIMPLEX
-%Solving by linprog procedure
-f = ones(size(new_x));
-sol = linprog(f,[],[],new_A,b,zeros(size(new_x)));
+c = ones(size(new_x));
+inq = -ones(size(b));
+sol = revised(c,b,new_A,inq,1);
 sol = convert(new_A,sol,b);
 %}
+
+%LINPROG MATLAB ORIGINAL IMPL. PGD/SIMPLEX
+%Solving by linprog procedure
+%f = ones(size(new_x));
+%sol = linprog(f,[],[],new_A,b,zeros(size(new_x)));
+%sol = convert(new_A,sol,b);
+
+c = ones(size(new_x));
+inq = -ones(m);
+revised(c,b,new_A,inq,1);
 
 x_res = sol(1:n) - sol(n+1:end);
 

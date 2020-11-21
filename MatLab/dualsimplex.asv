@@ -1,0 +1,39 @@
+function dualsimplex(A,b,c,B,N,x,y, state)
+
+[m, n] = size(A);
+
+while(state == "")
+    A_b = A(B,:); A_N = A(N,:);
+    b_b = b(B); b_N = b(N);
+    
+    A_b_inv = inv(A_b);
+    
+    %Initialization of x_ and y_
+    x =  A_b_inv*b_b;
+    y_B = c*A_b_inv;
+    y_N = zeros(n-length(y_B));
+    y = [y_B, y_N];
+    
+    %Checking optimal condition
+    A_nx = A_N * x;
+    if all(A_nx <= b_N)
+        state = "optimal";
+        break
+    end
+    
+    min_k = find(A_nx > b_N, 1, 'first');
+    k = N(min_k);
+    eta_b = A(k,:)* A_b_inv;
+    
+    %Primal empty check
+    if all(eta_b <= zeros(size(eta_b)))
+        state = "P.empty";
+        break
+    end
+    
+    theta = y(B).*(y.^(-1))' y(B)/eta_b;
+    
+    
+    
+    
+end

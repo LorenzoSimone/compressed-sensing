@@ -1,6 +1,8 @@
-function dualsimplex(A,b,c,state)
+function dualsimplex(A,b,c,B,state)
 
-
+if length(B)
+  disp('Non mi hai messo B');
+end
 
 %Finding a good basis
 [m, n] = size(A);
@@ -25,6 +27,7 @@ while(state == "")
     A_nx = A_N * x;
     if all(A_nx <= b_N)
         fprintf('||--------End [%d]--------||\n', iteration);
+        B
         fprintf('||--------Optimal solution found--------||\n');
         state = "optimal";
         break
@@ -46,27 +49,18 @@ while(state == "")
     end
     
     %Finding the exiting variable
-    pos_eta = find(eta_b > 0);
-    y_b = y(B);
-    
-    [theta, h] = min(y_b(pos_eta)./(eta_b(pos_eta)));
-  
-    B
+    theta = y(B)./eta_b;
 
+    [v, i] = min(theta(eta_b>0));
+    i = find(theta == v & eta_b > 0);
+    h = B(i);
+    
+    %[DEBUG] Printing variables as in the order of Exercise 2.31
+    B   
+    y
+    
     %Recalculating Basic and Non-Basic index vectors
     B = union(setdiff(B, h), k);
     N = setdiff(ROWS, B);
     iteration = iteration+1;
-    
-    %[DEBUG] Printing variables as in the order of Exercise 2.31
-    %{
-    x
-    A_nx
-    b_N
-    y
-    k
-    eta_b
-    h
-    %}
-    
 end

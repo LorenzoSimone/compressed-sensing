@@ -1,3 +1,3 @@
 function y = signal_function(x)
-    y = sin(10*x);
+    y = square(x);
 end

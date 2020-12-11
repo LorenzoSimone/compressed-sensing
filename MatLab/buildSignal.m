@@ -1,7 +1,8 @@
 %Sine Function implementation Report (1) Problem
 function [A,b,x_m,y_m] = buildSignal(m,n, interval)  
     
-    x_n = linspace(interval(1),interval(end),n);
+    x_n = (interval(end)-interval(1)).*rand(n,1) + interval(1);
+    size(x_n)
     y_n = signal_function(x_n)';
     
     perm = randperm(length(x_n),m);

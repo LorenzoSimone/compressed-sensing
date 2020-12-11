@@ -1,0 +1,16 @@
+dim = 20;
+h = 10;
+c = rand(dim,dim);
+
+[L,U] = lu(c);
+U(:,h) = ones(dim,1);
+
+pi = linspace(1,dim,dim);
+pi(10:end) = pi(10:end)+1;
+pi(end) = pi(10)-1;
+
+I = eye(dim);
+I(pi,:);
+
+    
+%spy(U)

@@ -1,10 +1,10 @@
-m = 10; n = 100;
-INTERVAL = [0,10];
+m = 80; n = 300;
+INTERVAL = [0,15];
 PLOT_POINTS = 1000;
 x = rand(n,1);
 
 %Constructing matrix A,b,x
-[A,b,x_m,y_m ] = buildSignal(m,n, INTERVAL);
+[A,b] = buildSignal(m,n, INTERVAL);
 vp = max(x,zeros(size(x)));
 vm = max(-x,zeros(size(x)));
 x = [vp;vm];
@@ -21,13 +21,12 @@ x_res = sol(1:n) - sol(n+1:end);
 %Reconstruct the signal
 [rec_x, rec_y] = reconstruct(x_res', PLOT_POINTS, INTERVAL);
 
-
 %TODO Solving by dualsimplex our implementation
 [ds_m, ds_n] = size(A);
 c = ones(size(x));
 M = 100;
 ds_A = [A';eye(ds_m)];
-ds_c = b';
+ds_c = b;
 ds_b = [c;ones(m,1)*M];
 ds_B = linspace(ds_n+1, ds_m+ds_n, m);
 [ds_x, ds_y] = dualsimplex(ds_A,ds_b,ds_c,ds_B,'',0);
@@ -43,8 +42,10 @@ y_point = signal_function(x_point);
 
 subplot(3,1,1);
 plot(x_point,y_point);
+hold on
+plot(x_m,y_m,'s','MarkerSize',10, 'MarkerFaceColor',[1 .6 .6]);
 legend('Original wave')
-title('Signal f[x] = sin(30x)')
+title('Signal f[x] = sin(x)')
 
 subplot(3,1,2);
 plot(x_point,y_point);
@@ -59,4 +60,3 @@ hold on
 plot(ds_rec_x,ds_rec_y);
 legend('Original wave', 'Reconstructed wave')
 title('Dual Simplex Implementation')
-

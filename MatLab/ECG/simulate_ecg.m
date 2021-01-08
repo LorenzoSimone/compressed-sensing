@@ -2,6 +2,7 @@ function [x,y] = simulate_ecg(bpm, rate, sec)
 
     freq = 1/rate;
     x=0:freq:sec;
+    x = x(1:end-1);
     li=30/bpm; 
     
     a_pwav=0.25;

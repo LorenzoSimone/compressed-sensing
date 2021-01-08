@@ -1,3 +1,3 @@
 function y = signal_function(x)
-    y = square(x);
+    y = cos(x);
 end

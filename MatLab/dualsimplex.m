@@ -3,7 +3,7 @@ function [x,y] = dualsimplex(A,b,c,B,state,verbose)
 [m, n] = size(A);
 ROWS = linspace(1,m,m);
 iteration  = 1;
-MAXITER = 1000000;
+MAXITER = 5000;
 
 %Default basis if it is not provided
 if ~length(B)  

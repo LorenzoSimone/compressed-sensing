@@ -3,7 +3,7 @@ function [x,y] = dualsimplex(A,b,c,B,state,verbose)
 [m, n] = size(A);
 ROWS = linspace(1,m,m);
 iteration  = 1;
-MAXITER = 5000;
+MAXITER = 50000;
 
 %Default basis if it is not provided
 if ~length(B)  
@@ -19,6 +19,7 @@ while(state == "" & MAXITER > iteration)
     A_b = A(B,:); A_N = A(N,:);
     b_b = b(B); b_N = b(N);
     A_b_inv = inv(A_b);
+    fprintf('Conditioning Number - %f', cond(A_b_inv))
 
     %Initialization of x_ and y_
     x =  A_b_inv*b_b;    

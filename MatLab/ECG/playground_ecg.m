@@ -1,5 +1,5 @@
 BPM = 40;
-SEC = 3;
+SEC = 1;
 RATE = 1000;
 CMP_RATE = 75;
 n = SEC*RATE;

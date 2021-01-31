@@ -8,7 +8,7 @@ function [x_res,y_res] = reconstruct(x, n_points, interval)
             y = 0;
             k = 1;
             for j = x
-                y = y + j*sin(k*i);
+                y = y + j*cos(k*i);
                 k = k +1;
             end
             y_res = [y_res,y];

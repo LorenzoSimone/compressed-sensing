@@ -1,7 +1,8 @@
 %Sine Function implementation Report (1) Problem
 function [A,b,x_m,y_m] = buildSignal(m,n,sign_function,interval)  
     
-    x_n = (interval(end)-interval(1)).*rand(n,1) + interval(1);
+    x_n = linspace(interval(1), interval(end),n)';
+    disp(size(x_n));
     size(x_n)
     y_n = sign_function(x_n)';
     
@@ -15,7 +16,7 @@ function [A,b,x_m,y_m] = buildSignal(m,n,sign_function,interval)
     %Initializing A matrix according to sin(j*x_i)
     for i = 1:m
         for j = 1:n
-            A(i,j) = sin(j*x_m(i));
+            A(i,j) = cos(j*x_m(i));
         end
     end
 end
